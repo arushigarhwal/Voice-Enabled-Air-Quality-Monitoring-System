@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Air Quality Monitor + Live Sensor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+  <style>
+    .dot-flash {
+      font-size: 1.5rem;
+      animation: blink 1s infinite;
+      color: #00d1b2;
+      margin-left: 8px;
+    }
+
+    @keyframes blink {
+      0%   { opacity: 0.2; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.2; }
+    }
+  </style>
+  <script>
+    // Fetch live gas sensor value
+    async function fetchData() {
+      try {
+        const response = await fetch('/latest');
+        const data = await response.json();
+        document.getElementById('gas-value').innerText = data.gas_value;
+      } catch (error) {
+        document.getElementById('gas-value').innerText = "Error!";
+      }
+    }
+
+    // Voice command handler
+    function startVoice() {
+      document.getElementById("listening-indicator").style.display = "block";
+      setTimeout(() => {
+        window.location.href = "/start-voice";
+      }, 300);
+    }
+
+    // Poll gas sensor every 2 seconds
+    setInterval(fetchData, 2000);
+    window.onload = fetchData;
+  </script>
+</head>
+<body class="has-background-light">
+  <section class="section">
+    <div class="container has-text-centered">
+      <h1 class="title">🌍 Air Quality Dashboard</h1>
+      <p class="subtitle">Live Sensor Data + Voice Commands</p>
+
+      <!-- Gas Value -->
+      <div class="box">
+        <h2 class="is-size-4">🌫️ Gas Sensor Value:</h2>
+        <h2 class="is-size-3 has-text-weight-bold"><span id="gas-value">Loading...</span></h2>
+      </div>
+
+      <!-- Voice Command Button -->
+      <button class="button is-primary is-large mt-4" onclick="startVoice()">🎤 Start Voice Command</button>
+
+      <!-- Listening Indicator -->
+      <div id="listening-indicator" class="mt-4" style="display: none;">
+        <span class="has-text-info is-size-4">🎧 Listening...</span>
+        <span class="dot-flash">●</span>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

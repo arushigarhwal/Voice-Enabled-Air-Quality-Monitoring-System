@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Readings for {{ date }}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">📅 Readings on {{ date }}</h1>
+      <table class="table is-bordered is-fullwidth">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in readings %}
+          <tr>
+            <td>{{ r.timestamp }}</td>
+            <td>{{ r.value }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</body>
+</html>
